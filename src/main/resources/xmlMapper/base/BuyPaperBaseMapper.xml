@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vplan.backend.mapper.base.BuyPaperBaseMapper">
+
+
+    <insert id="insertBuyPaperModel" >
+        INSERT INTO `buy_paper`
+        (
+        <trim suffixOverrides=",">
+                    <if test="user_id!=null">
+                        `user_id`,
+                    </if>
+                    <if test="paper_id!=null">
+                        `paper_id`,
+                    </if>
+                    <if test="time!=null">
+                        `time`,
+                    </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+                <if test="user_id!=null">
+                    #{user_id},
+                </if>
+                <if test="paper_id!=null">
+                    #{paper_id},
+                </if>
+                <if test="time!=null">
+                    #{time},
+                </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <update id="updateBuyPaperModel">
+        UPDATE `buy_paper`
+        SET
+        <trim suffixOverrides=",">
+            <if test="time != null">
+                `time` = #{time},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+                `user_id` = #{user_id} and
+                `paper_id` = #{paper_id} and
+        </trim>
+    </update>
+
+    <update id="update">
+        UPDATE `buy_paper`
+        SET
+        <trim suffixOverrides=",">
+        <if test="set.time != null">
+            `time` = #{set.time},
+        </if>
+        </trim>
+        <trim prefix="where" suffixOverrides="and | or">
+                <if test="where.user_idList != null">
+                    `user_id` in
+                    <foreach collection="where.user_idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.user_idSt !=null">
+                `user_id` >= #{where.user_idSt} and
+            </if>
+            <if test="where.user_idEd!=null">
+                `user_id` &lt;= #{where.user_idEd} and
+            </if>
+                <if test="where.paper_idList != null">
+                    `paper_id` in
+                    <foreach collection="where.paper_idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.paper_idSt !=null">
+                `paper_id` >= #{where.paper_idSt} and
+            </if>
+            <if test="where.paper_idEd!=null">
+                `paper_id` &lt;= #{where.paper_idEd} and
+            </if>
+                <if test="where.timeList != null">
+                    `time` in
+                    <foreach collection="where.timeList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.timeSt !=null">
+                `time` >= #{where.timeSt} and
+            </if>
+            <if test="where.timeEd!=null">
+                `time` &lt;= #{where.timeEd} and
+            </if>
+        </trim>
+    </update>
+
+
+    <resultMap type="com.vplan.backend.model.BuyPaperModel" id="BuyPaperModelMap">
+        <result property="user_id" column="user_id"/>
+        <result property="paper_id" column="paper_id"/>
+        <result property="time" column="time"/>
+    </resultMap>
+
+
+    <select id="queryBuyPaperModel" resultMap="BuyPaperModelMap">
+        select
+        <include refid="baseResult"></include>
+        from  `buy_paper`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="user_id != null">
+                `user_id` = #{user_id} and
+            </if>
+            <if test="paper_id != null">
+                `paper_id` = #{paper_id} and
+            </if>
+            <if test="time != null">
+                `time` = #{time} and
+            </if>
+            <if test = "(_parameter instanceof com.vplan.backend.model.BuyPaperModel$QueryBuilder) == true">
+                <if test="user_idList != null">
+                    `user_id` in
+                    <foreach collection="user_idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="user_idSt !=null">
+                    `user_id` >= #{user_idSt} and
+                </if>
+                <if test="user_idEd!=null">
+                    `user_id` &lt;= #{user_idEd} and
+                </if>
+                <if test="paper_idList != null">
+                    `paper_id` in
+                    <foreach collection="paper_idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="paper_idSt !=null">
+                    `paper_id` >= #{paper_idSt} and
+                </if>
+                <if test="paper_idEd!=null">
+                    `paper_id` &lt;= #{paper_idEd} and
+                </if>
+                <if test="timeList != null">
+                    `time` in
+                    <foreach collection="timeList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="timeSt !=null">
+                    `time` >= #{timeSt} and
+                </if>
+                <if test="timeEd!=null">
+                    `time` &lt;= #{timeEd} and
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryBuyPaperModelLimit1" resultMap="BuyPaperModelMap">
+        select
+        <include refid="baseResult"></include>
+        from  `buy_paper`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="user_id != null">
+                `user_id` = #{user_id} and
+            </if>
+            <if test="paper_id != null">
+                `paper_id` = #{paper_id} and
+            </if>
+            <if test="time != null">
+                `time` = #{time} and
+            </if>
+            <if test = "(_parameter instanceof com.vplan.backend.model.BuyPaperModel$QueryBuilder) == true">
+                    <if test="user_idList != null">
+                        `user_id` in
+                        <foreach collection="user_idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="user_idSt !=null">
+                    `user_id` >= #{user_idSt} and
+                </if>
+                <if test="user_idEd!=null">
+                    `user_id` &lt;= #{user_idEd} and
+                </if>
+                    <if test="paper_idList != null">
+                        `paper_id` in
+                        <foreach collection="paper_idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="paper_idSt !=null">
+                    `paper_id` >= #{paper_idSt} and
+                </if>
+                <if test="paper_idEd!=null">
+                    `paper_id` &lt;= #{paper_idEd} and
+                </if>
+                    <if test="timeList != null">
+                        `time` in
+                        <foreach collection="timeList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="timeSt !=null">
+                    `time` >= #{timeSt} and
+                </if>
+                <if test="timeEd!=null">
+                    `time` &lt;= #{timeEd} and
+                </if>
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+        `user_id`,
+        `paper_id`,
+        `time`,
+        </trim>
+    </sql>
+
+
+
+    <sql id="baseResult">
+        <trim suffixOverrides=",">
+            <if test = "(_parameter instanceof com.vplan.backend.model.BuyPaperModel$QueryBuilder) == true">
+
+                <if test="fetchFields==null">
+                    <include refid="allResult"></include>
+                </if>
+                <if test="fetchFields!=null">
+                    <if test="fetchFields.AllFields !=null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields ==null and fetchFields.fetchFields==null and fetchFields.excludeFields==null and fetchFields.otherFields==null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.fetchFields!=null">
+                    <if test="fetchFields.fetchFields.user_id==true">
+                        `user_id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.paper_id==true">
+                        `paper_id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.time==true">
+                        `time`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
+                    <if test="fetchFields.excludeFields.user_id==null">
+                        `user_id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.paper_id==null">
+                        `paper_id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.time==null">
+                        `time`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">
+                        <foreach collection="fetchFields.otherFields" index="index" item="item" separator=",">
+                        `#{item}`
+                        </foreach>
+                    </if>
+                </if>
+            </if>
+            <if test="(_parameter instanceof com.vplan.backend.model.BuyPaperModel$QueryBuilder) == false" >
+                <include refid="allResult"></include>
+            </if>
+
+        </trim>
+    </sql>
+
+
+</mapper>

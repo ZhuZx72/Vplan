@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vplan.backend.mapper.base.DoExerciseBaseMapper">
+
+
+    <insert id="insertDoExerciseModel" >
+        INSERT INTO `do_exercise`
+        (
+        <trim suffixOverrides=",">
+                    <if test="user_id!=null">
+                        `user_id`,
+                    </if>
+                    <if test="exercise_id!=null">
+                        `exercise_id`,
+                    </if>
+                    <if test="time!=null">
+                        `time`,
+                    </if>
+                    <if test="result!=null">
+                        `result`,
+                    </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+                <if test="user_id!=null">
+                    #{user_id},
+                </if>
+                <if test="exercise_id!=null">
+                    #{exercise_id},
+                </if>
+                <if test="time!=null">
+                    #{time},
+                </if>
+                <if test="result!=null">
+                    #{result},
+                </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <update id="updateDoExerciseModel">
+        UPDATE `do_exercise`
+        SET
+        <trim suffixOverrides=",">
+            <if test="time != null">
+                `time` = #{time},
+            </if>
+            <if test="result != null and result!=''">
+                `result` = #{result},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+                `user_id` = #{user_id} and
+                `exercise_id` = #{exercise_id} and
+        </trim>
+    </update>
+
+    <update id="update">
+        UPDATE `do_exercise`
+        SET
+        <trim suffixOverrides=",">
+        <if test="set.time != null">
+            `time` = #{set.time},
+        </if>
+        <if test="set.result != null and set.result!=''">
+            `result` = #{set.result},
+        </if>
+        </trim>
+        <trim prefix="where" suffixOverrides="and | or">
+                <if test="where.user_idList != null">
+                    `user_id` in
+                    <foreach collection="where.user_idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.user_idSt !=null">
+                `user_id` >= #{where.user_idSt} and
+            </if>
+            <if test="where.user_idEd!=null">
+                `user_id` &lt;= #{where.user_idEd} and
+            </if>
+                <if test="where.exercise_idList != null">
+                    `exercise_id` in
+                    <foreach collection="where.exercise_idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.exercise_idSt !=null">
+                `exercise_id` >= #{where.exercise_idSt} and
+            </if>
+            <if test="where.exercise_idEd!=null">
+                `exercise_id` &lt;= #{where.exercise_idEd} and
+            </if>
+                <if test="where.timeList != null">
+                    `time` in
+                    <foreach collection="where.timeList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.timeSt !=null">
+                `time` >= #{where.timeSt} and
+            </if>
+            <if test="where.timeEd!=null">
+                `time` &lt;= #{where.timeEd} and
+            </if>
+                <if test="where.resultList != null">
+                    `result` in
+                    <foreach collection="where.resultList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyResult!=null and where.fuzzyResult.size()>0">
+                (
+                <foreach collection="where.fuzzyResult"  separator="or" item="item">
+                    `Result` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyResult!=null and where.rightFuzzyResult.size()>0">
+                (
+                <foreach collection="where.rightFuzzyResult"  separator="or" item="item">
+                    `Result` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+        </trim>
+    </update>
+
+
+    <resultMap type="com.vplan.backend.model.DoExerciseModel" id="DoExerciseModelMap">
+        <result property="user_id" column="user_id"/>
+        <result property="exercise_id" column="exercise_id"/>
+        <result property="time" column="time"/>
+        <result property="result" column="result"/>
+    </resultMap>
+
+
+    <select id="queryDoExerciseModel" resultMap="DoExerciseModelMap">
+        select
+        <include refid="baseResult"></include>
+        from  `do_exercise`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="user_id != null">
+                `user_id` = #{user_id} and
+            </if>
+            <if test="exercise_id != null">
+                `exercise_id` = #{exercise_id} and
+            </if>
+            <if test="time != null">
+                `time` = #{time} and
+            </if>
+            <if test="result != null and result!=''">
+                `result` = #{result} and
+            </if>
+            <if test = "(_parameter instanceof com.vplan.backend.model.DoExerciseModel$QueryBuilder) == true">
+                <if test="user_idList != null">
+                    `user_id` in
+                    <foreach collection="user_idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="user_idSt !=null">
+                    `user_id` >= #{user_idSt} and
+                </if>
+                <if test="user_idEd!=null">
+                    `user_id` &lt;= #{user_idEd} and
+                </if>
+                <if test="exercise_idList != null">
+                    `exercise_id` in
+                    <foreach collection="exercise_idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="exercise_idSt !=null">
+                    `exercise_id` >= #{exercise_idSt} and
+                </if>
+                <if test="exercise_idEd!=null">
+                    `exercise_id` &lt;= #{exercise_idEd} and
+                </if>
+                <if test="timeList != null">
+                    `time` in
+                    <foreach collection="timeList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="timeSt !=null">
+                    `time` >= #{timeSt} and
+                </if>
+                <if test="timeEd!=null">
+                    `time` &lt;= #{timeEd} and
+                </if>
+                <if test="resultList != null">
+                    `result` in
+                    <foreach collection="resultList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyResult!=null and fuzzyResult.size()>0">
+                    (
+                    <foreach collection="fuzzyResult"  separator="or" item="item">
+                        `Result` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyResult!=null and rightFuzzyResult.size()>0">
+                    (
+                    <foreach collection="rightFuzzyResult"  separator="or" item="item">
+                        `Result` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryDoExerciseModelLimit1" resultMap="DoExerciseModelMap">
+        select
+        <include refid="baseResult"></include>
+        from  `do_exercise`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="user_id != null">
+                `user_id` = #{user_id} and
+            </if>
+            <if test="exercise_id != null">
+                `exercise_id` = #{exercise_id} and
+            </if>
+            <if test="time != null">
+                `time` = #{time} and
+            </if>
+            <if test="result != null and result!=''">
+                `result` = #{result} and
+            </if>
+            <if test = "(_parameter instanceof com.vplan.backend.model.DoExerciseModel$QueryBuilder) == true">
+                    <if test="user_idList != null">
+                        `user_id` in
+                        <foreach collection="user_idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="user_idSt !=null">
+                    `user_id` >= #{user_idSt} and
+                </if>
+                <if test="user_idEd!=null">
+                    `user_id` &lt;= #{user_idEd} and
+                </if>
+                    <if test="exercise_idList != null">
+                        `exercise_id` in
+                        <foreach collection="exercise_idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="exercise_idSt !=null">
+                    `exercise_id` >= #{exercise_idSt} and
+                </if>
+                <if test="exercise_idEd!=null">
+                    `exercise_id` &lt;= #{exercise_idEd} and
+                </if>
+                    <if test="timeList != null">
+                        `time` in
+                        <foreach collection="timeList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="timeSt !=null">
+                    `time` >= #{timeSt} and
+                </if>
+                <if test="timeEd!=null">
+                    `time` &lt;= #{timeEd} and
+                </if>
+                    <if test="resultList != null">
+                        `result` in
+                        <foreach collection="resultList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyResult!=null and fuzzyResult.size()>0">
+                    (
+                    <foreach collection="fuzzyResult"  separator="or" item="item">
+                        `Result` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyResult!=null and rightFuzzyResult.size()>0">
+                    (
+                    <foreach collection="rightFuzzyResult"  separator="or" item="item">
+                        `Result` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+        `user_id`,
+        `exercise_id`,
+        `time`,
+        `result`,
+        </trim>
+    </sql>
+
+
+
+    <sql id="baseResult">
+        <trim suffixOverrides=",">
+            <if test = "(_parameter instanceof com.vplan.backend.model.DoExerciseModel$QueryBuilder) == true">
+
+                <if test="fetchFields==null">
+                    <include refid="allResult"></include>
+                </if>
+                <if test="fetchFields!=null">
+                    <if test="fetchFields.AllFields !=null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields ==null and fetchFields.fetchFields==null and fetchFields.excludeFields==null and fetchFields.otherFields==null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.fetchFields!=null">
+                    <if test="fetchFields.fetchFields.user_id==true">
+                        `user_id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.exercise_id==true">
+                        `exercise_id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.time==true">
+                        `time`,
+                    </if>
+                    <if test="fetchFields.fetchFields.result==true">
+                        `result`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
+                    <if test="fetchFields.excludeFields.user_id==null">
+                        `user_id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.exercise_id==null">
+                        `exercise_id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.time==null">
+                        `time`,
+                    </if>
+                    <if test="fetchFields.excludeFields.result==null">
+                        `result`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">
+                        <foreach collection="fetchFields.otherFields" index="index" item="item" separator=",">
+                        `#{item}`
+                        </foreach>
+                    </if>
+                </if>
+            </if>
+            <if test="(_parameter instanceof com.vplan.backend.model.DoExerciseModel$QueryBuilder) == false" >
+                <include refid="allResult"></include>
+            </if>
+
+        </trim>
+    </sql>
+
+
+</mapper>

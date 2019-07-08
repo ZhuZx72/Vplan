@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vplan.backend.mapper.base.UserBaseMapper">
+
+
+    <insert id="insertUserModel" >
+        INSERT INTO `user`
+        (
+        <trim suffixOverrides=",">
+                    <if test="user_id!=null">
+                        `user_id`,
+                    </if>
+                    <if test="user_name!=null">
+                        `user_name`,
+                    </if>
+                    <if test="password!=null">
+                        `password`,
+                    </if>
+                    <if test="rmb!=null">
+                        `rmb`,
+                    </if>
+                    <if test="coin!=null">
+                        `coin`,
+                    </if>
+                    <if test="area!=null">
+                        `area`,
+                    </if>
+                    <if test="level!=null">
+                        `level`,
+                    </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+                <if test="user_id!=null">
+                    #{user_id},
+                </if>
+                <if test="user_name!=null">
+                    #{user_name},
+                </if>
+                <if test="password!=null">
+                    #{password},
+                </if>
+                <if test="rmb!=null">
+                    #{rmb},
+                </if>
+                <if test="coin!=null">
+                    #{coin},
+                </if>
+                <if test="area!=null">
+                    #{area},
+                </if>
+                <if test="level!=null">
+                    #{level},
+                </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <update id="updateUserModel">
+        UPDATE `user`
+        SET
+        <trim suffixOverrides=",">
+            <if test="user_name != null and user_name!=''">
+                `user_name` = #{user_name},
+            </if>
+            <if test="password != null and password!=''">
+                `password` = #{password},
+            </if>
+            <if test="rmb != null">
+                `rmb` = #{rmb},
+            </if>
+            <if test="coin != null">
+                `coin` = #{coin},
+            </if>
+            <if test="area != null and area!=''">
+                `area` = #{area},
+            </if>
+            <if test="level != null">
+                `level` = #{level},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+                `user_id` = #{user_id} and
+        </trim>
+    </update>
+
+    <update id="update">
+        UPDATE `user`
+        SET
+        <trim suffixOverrides=",">
+        <if test="set.user_name != null and set.user_name!=''">
+            `user_name` = #{set.user_name},
+        </if>
+        <if test="set.password != null and set.password!=''">
+            `password` = #{set.password},
+        </if>
+        <if test="set.rmb != null">
+            `rmb` = #{set.rmb},
+        </if>
+        <if test="set.coin != null">
+            `coin` = #{set.coin},
+        </if>
+        <if test="set.area != null and set.area!=''">
+            `area` = #{set.area},
+        </if>
+        <if test="set.level != null">
+            `level` = #{set.level},
+        </if>
+        </trim>
+        <trim prefix="where" suffixOverrides="and | or">
+                <if test="where.user_idList != null">
+                    `user_id` in
+                    <foreach collection="where.user_idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyUser_id!=null and where.fuzzyUser_id.size()>0">
+                (
+                <foreach collection="where.fuzzyUser_id"  separator="or" item="item">
+                    `User_id` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyUser_id!=null and where.rightFuzzyUser_id.size()>0">
+                (
+                <foreach collection="where.rightFuzzyUser_id"  separator="or" item="item">
+                    `User_id` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.user_nameList != null">
+                    `user_name` in
+                    <foreach collection="where.user_nameList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyUser_name!=null and where.fuzzyUser_name.size()>0">
+                (
+                <foreach collection="where.fuzzyUser_name"  separator="or" item="item">
+                    `User_name` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyUser_name!=null and where.rightFuzzyUser_name.size()>0">
+                (
+                <foreach collection="where.rightFuzzyUser_name"  separator="or" item="item">
+                    `User_name` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.passwordList != null">
+                    `password` in
+                    <foreach collection="where.passwordList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyPassword!=null and where.fuzzyPassword.size()>0">
+                (
+                <foreach collection="where.fuzzyPassword"  separator="or" item="item">
+                    `Password` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyPassword!=null and where.rightFuzzyPassword.size()>0">
+                (
+                <foreach collection="where.rightFuzzyPassword"  separator="or" item="item">
+                    `Password` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.rmbList != null">
+                    `rmb` in
+                    <foreach collection="where.rmbList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.rmbSt !=null">
+                `rmb` >= #{where.rmbSt} and
+            </if>
+            <if test="where.rmbEd!=null">
+                `rmb` &lt;= #{where.rmbEd} and
+            </if>
+                <if test="where.coinList != null">
+                    `coin` in
+                    <foreach collection="where.coinList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.coinSt !=null">
+                `coin` >= #{where.coinSt} and
+            </if>
+            <if test="where.coinEd!=null">
+                `coin` &lt;= #{where.coinEd} and
+            </if>
+                <if test="where.areaList != null">
+                    `area` in
+                    <foreach collection="where.areaList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyArea!=null and where.fuzzyArea.size()>0">
+                (
+                <foreach collection="where.fuzzyArea"  separator="or" item="item">
+                    `Area` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyArea!=null and where.rightFuzzyArea.size()>0">
+                (
+                <foreach collection="where.rightFuzzyArea"  separator="or" item="item">
+                    `Area` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.levelList != null">
+                    `level` in
+                    <foreach collection="where.levelList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.levelSt !=null">
+                `level` >= #{where.levelSt} and
+            </if>
+            <if test="where.levelEd!=null">
+                `level` &lt;= #{where.levelEd} and
+            </if>
+        </trim>
+    </update>
+
+
+    <resultMap type="com.vplan.backend.model.UserModel" id="UserModelMap">
+        <result property="user_id" column="user_id"/>
+        <result property="user_name" column="user_name"/>
+        <result property="password" column="password"/>
+        <result property="rmb" column="rmb"/>
+        <result property="coin" column="coin"/>
+        <result property="area" column="area"/>
+        <result property="level" column="level"/>
+    </resultMap>
+
+
+    <select id="queryUserModel" resultMap="UserModelMap">
+        select
+        <include refid="baseResult"></include>
+        from  `user`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="user_id != null and user_id!=''">
+                `user_id` = #{user_id} and
+            </if>
+            <if test="user_name != null and user_name!=''">
+                `user_name` = #{user_name} and
+            </if>
+            <if test="password != null and password!=''">
+                `password` = #{password} and
+            </if>
+            <if test="rmb != null">
+                `rmb` = #{rmb} and
+            </if>
+            <if test="coin != null">
+                `coin` = #{coin} and
+            </if>
+            <if test="area != null and area!=''">
+                `area` = #{area} and
+            </if>
+            <if test="level != null">
+                `level` = #{level} and
+            </if>
+            <if test = "(_parameter instanceof com.vplan.backend.model.UserModel$QueryBuilder) == true">
+                <if test="user_idList != null">
+                    `user_id` in
+                    <foreach collection="user_idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyUser_id!=null and fuzzyUser_id.size()>0">
+                    (
+                    <foreach collection="fuzzyUser_id"  separator="or" item="item">
+                        `User_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyUser_id!=null and rightFuzzyUser_id.size()>0">
+                    (
+                    <foreach collection="rightFuzzyUser_id"  separator="or" item="item">
+                        `User_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="user_nameList != null">
+                    `user_name` in
+                    <foreach collection="user_nameList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyUser_name!=null and fuzzyUser_name.size()>0">
+                    (
+                    <foreach collection="fuzzyUser_name"  separator="or" item="item">
+                        `User_name` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyUser_name!=null and rightFuzzyUser_name.size()>0">
+                    (
+                    <foreach collection="rightFuzzyUser_name"  separator="or" item="item">
+                        `User_name` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="passwordList != null">
+                    `password` in
+                    <foreach collection="passwordList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyPassword!=null and fuzzyPassword.size()>0">
+                    (
+                    <foreach collection="fuzzyPassword"  separator="or" item="item">
+                        `Password` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyPassword!=null and rightFuzzyPassword.size()>0">
+                    (
+                    <foreach collection="rightFuzzyPassword"  separator="or" item="item">
+                        `Password` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="rmbList != null">
+                    `rmb` in
+                    <foreach collection="rmbList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="rmbSt !=null">
+                    `rmb` >= #{rmbSt} and
+                </if>
+                <if test="rmbEd!=null">
+                    `rmb` &lt;= #{rmbEd} and
+                </if>
+                <if test="coinList != null">
+                    `coin` in
+                    <foreach collection="coinList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="coinSt !=null">
+                    `coin` >= #{coinSt} and
+                </if>
+                <if test="coinEd!=null">
+                    `coin` &lt;= #{coinEd} and
+                </if>
+                <if test="areaList != null">
+                    `area` in
+                    <foreach collection="areaList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyArea!=null and fuzzyArea.size()>0">
+                    (
+                    <foreach collection="fuzzyArea"  separator="or" item="item">
+                        `Area` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyArea!=null and rightFuzzyArea.size()>0">
+                    (
+                    <foreach collection="rightFuzzyArea"  separator="or" item="item">
+                        `Area` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="levelList != null">
+                    `level` in
+                    <foreach collection="levelList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="levelSt !=null">
+                    `level` >= #{levelSt} and
+                </if>
+                <if test="levelEd!=null">
+                    `level` &lt;= #{levelEd} and
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryUserModelLimit1" resultMap="UserModelMap">
+        select
+        <include refid="baseResult"></include>
+        from  `user`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="user_id != null and user_id!=''">
+                `user_id` = #{user_id} and
+            </if>
+            <if test="user_name != null and user_name!=''">
+                `user_name` = #{user_name} and
+            </if>
+            <if test="password != null and password!=''">
+                `password` = #{password} and
+            </if>
+            <if test="rmb != null">
+                `rmb` = #{rmb} and
+            </if>
+            <if test="coin != null">
+                `coin` = #{coin} and
+            </if>
+            <if test="area != null and area!=''">
+                `area` = #{area} and
+            </if>
+            <if test="level != null">
+                `level` = #{level} and
+            </if>
+            <if test = "(_parameter instanceof com.vplan.backend.model.UserModel$QueryBuilder) == true">
+                    <if test="user_idList != null">
+                        `user_id` in
+                        <foreach collection="user_idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyUser_id!=null and fuzzyUser_id.size()>0">
+                    (
+                    <foreach collection="fuzzyUser_id"  separator="or" item="item">
+                        `User_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyUser_id!=null and rightFuzzyUser_id.size()>0">
+                    (
+                    <foreach collection="rightFuzzyUser_id"  separator="or" item="item">
+                        `User_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="user_nameList != null">
+                        `user_name` in
+                        <foreach collection="user_nameList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyUser_name!=null and fuzzyUser_name.size()>0">
+                    (
+                    <foreach collection="fuzzyUser_name"  separator="or" item="item">
+                        `User_name` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyUser_name!=null and rightFuzzyUser_name.size()>0">
+                    (
+                    <foreach collection="rightFuzzyUser_name"  separator="or" item="item">
+                        `User_name` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="passwordList != null">
+                        `password` in
+                        <foreach collection="passwordList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyPassword!=null and fuzzyPassword.size()>0">
+                    (
+                    <foreach collection="fuzzyPassword"  separator="or" item="item">
+                        `Password` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyPassword!=null and rightFuzzyPassword.size()>0">
+                    (
+                    <foreach collection="rightFuzzyPassword"  separator="or" item="item">
+                        `Password` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="rmbList != null">
+                        `rmb` in
+                        <foreach collection="rmbList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="rmbSt !=null">
+                    `rmb` >= #{rmbSt} and
+                </if>
+                <if test="rmbEd!=null">
+                    `rmb` &lt;= #{rmbEd} and
+                </if>
+                    <if test="coinList != null">
+                        `coin` in
+                        <foreach collection="coinList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="coinSt !=null">
+                    `coin` >= #{coinSt} and
+                </if>
+                <if test="coinEd!=null">
+                    `coin` &lt;= #{coinEd} and
+                </if>
+                    <if test="areaList != null">
+                        `area` in
+                        <foreach collection="areaList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyArea!=null and fuzzyArea.size()>0">
+                    (
+                    <foreach collection="fuzzyArea"  separator="or" item="item">
+                        `Area` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyArea!=null and rightFuzzyArea.size()>0">
+                    (
+                    <foreach collection="rightFuzzyArea"  separator="or" item="item">
+                        `Area` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="levelList != null">
+                        `level` in
+                        <foreach collection="levelList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="levelSt !=null">
+                    `level` >= #{levelSt} and
+                </if>
+                <if test="levelEd!=null">
+                    `level` &lt;= #{levelEd} and
+                </if>
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+        `user_id`,
+        `user_name`,
+        `password`,
+        `rmb`,
+        `coin`,
+        `area`,
+        `level`,
+        </trim>
+    </sql>
+
+
+
+    <sql id="baseResult">
+        <trim suffixOverrides=",">
+            <if test = "(_parameter instanceof com.vplan.backend.model.UserModel$QueryBuilder) == true">
+
+                <if test="fetchFields==null">
+                    <include refid="allResult"></include>
+                </if>
+                <if test="fetchFields!=null">
+                    <if test="fetchFields.AllFields !=null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields ==null and fetchFields.fetchFields==null and fetchFields.excludeFields==null and fetchFields.otherFields==null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.fetchFields!=null">
+                    <if test="fetchFields.fetchFields.user_id==true">
+                        `user_id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.user_name==true">
+                        `user_name`,
+                    </if>
+                    <if test="fetchFields.fetchFields.password==true">
+                        `password`,
+                    </if>
+                    <if test="fetchFields.fetchFields.rmb==true">
+                        `rmb`,
+                    </if>
+                    <if test="fetchFields.fetchFields.coin==true">
+                        `coin`,
+                    </if>
+                    <if test="fetchFields.fetchFields.area==true">
+                        `area`,
+                    </if>
+                    <if test="fetchFields.fetchFields.level==true">
+                        `level`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
+                    <if test="fetchFields.excludeFields.user_id==null">
+                        `user_id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.user_name==null">
+                        `user_name`,
+                    </if>
+                    <if test="fetchFields.excludeFields.password==null">
+                        `password`,
+                    </if>
+                    <if test="fetchFields.excludeFields.rmb==null">
+                        `rmb`,
+                    </if>
+                    <if test="fetchFields.excludeFields.coin==null">
+                        `coin`,
+                    </if>
+                    <if test="fetchFields.excludeFields.area==null">
+                        `area`,
+                    </if>
+                    <if test="fetchFields.excludeFields.level==null">
+                        `level`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">
+                        <foreach collection="fetchFields.otherFields" index="index" item="item" separator=",">
+                        `#{item}`
+                        </foreach>
+                    </if>
+                </if>
+            </if>
+            <if test="(_parameter instanceof com.vplan.backend.model.UserModel$QueryBuilder) == false" >
+                <include refid="allResult"></include>
+            </if>
+
+        </trim>
+    </sql>
+
+
+</mapper>
